@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login & Daftar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .rgb-box {
+      position: relative;
+      width: 350px;
+      padding: 30px;
+      border-radius: 25px;
+      background: #111;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .rgb-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, red, orange, yellow, lime, cyan, blue, magenta, red);
+      background-size: 400%;
+      animation: rgbMove 10s linear infinite;
+      z-index: -1;
+      filter: blur(30px);
+    }
+
+    @keyframes rgbMove {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .rgb-box h2 {
+      color: white;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+    }
+
+    input {
+      background: #222;
+      color: white;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    a {
+      color: #00f7ff;
+      text-align: center;
+      display: block;
+      margin-top: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    #message, #messageReg {
+      color: #0f0;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="rgb-box" id="loginBox">
+  <div id="message"></div>
+  <h2>𝐋𝐨𝐠 𝐈𝐧 𝐍𝐲𝐚 𝐘𝐚𝐧𝐠 𝐁𝐞𝐧𝐞𝐫</h2>
+  <input type="text" id="loginUser" placeholder="Username">
+  <input type="password" id="loginPass" placeholder="Password">
+  <button onclick="login()">Masuk</button>
+  <a onclick="showRegister()">𝐃𝐚𝐟𝐭𝐚𝐫 𝐊𝐚𝐥𝐚𝐮 𝐋𝐮 𝐁𝐥𝐮𝐦 𝐏𝐮𝐧𝐲𝐚 𝐀𝐤𝐮𝐧</a>
+</div>
+
+<div class="rgb-box hidden" id="registerBox">
+  <div id="messageReg"></div>
+  <h2>Daftar</h2>
+  <input type="text" id="regUser" placeholder="Username">
+  <input type="password" id="regPass" placeholder="Password">
+  <label style="color: white;"><input type="checkbox" id="regVerify"> Verification</label>
+  <button onclick="register()">Daftar</button>
+  <a onclick="showLogin()">Sudah Punya Akun? Login</a>
+</div>
+
+<div class="rgb-box hidden" id="welcomeBox">
+  <h2 style="color:white;">𝐋𝐨𝐠 𝐈𝐧 𝐁𝐞𝐫𝐡𝐚𝐬𝐢𝐥 𝐁𝐫𝐞</h2>
+  <p id="welcomeText" style="color:white;"></p>
+</div>
+
+<script>
+  function showRegister() {
+    document.getElementById('registerBox').classList.remove('hidden');
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('messageReg').innerText = '';
+  }
+
+  function showLogin() {
+    document.getElementById('registerBox').classList.add('hidden');
+    document.getElementById('loginBox').classList.remove('hidden');
+    document.getElementById('message').innerText = '';
+  }
+
+  function register() {
+    const user = document.getElementById('regUser').value;
+    const pass = document.getElementById('regPass').value;
+    const verified = document.getElementById('regVerify').checked;
+
+    if (!user || !pass || !verified) {
+      alert('Lengkapi semua data dan centang verifikasi!');
+      return;
+    }
+
+    localStorage.setItem('username', user);
+    localStorage.setItem('password', pass);
+    document.getElementById('message').innerText = "𝐃𝐚𝐟𝐭𝐚𝐫 𝐁𝐞𝐫𝐡𝐚𝐬𝐢𝐥 𝐓𝐢𝐧𝐠𝐠𝐚𝐥 𝐋𝐨𝐠 𝐈𝐧 𝐀𝐣𝐚";
+    showLogin();
+  }
+
+  function login() {
+    const user = document.getElementById('loginUser').value;
+    const pass = document.getElementById('loginPass').value;
+
+    const storedUser = localStorage.getItem('username');
+    const storedPass = localStorage.getItem('password');
+
+    if (user === storedUser && pass === storedPass) {
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('welcomeText').innerText = `Halo, ${user}!`;
+      document.getElementById('welcomeBox').classList.remove('hidden');
+    } else {
+      document.getElementById('message').innerText = "𝐋𝐨𝐠 𝐈𝐧 𝐋𝐮 𝐊𝐚𝐲𝐚𝐧𝐲𝐚 𝐒𝐚𝐥𝐚𝐡 𝐃𝐞𝐡";
+    }
+  }
+</script>
+
+</body>
+</html>
